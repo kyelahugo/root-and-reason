@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>r&amp;r — about</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Caveat:wght@500;600&family=Special+Elite&display=swap');
+  :root{
+    --buttermilk:#f4ecd5; --beige:#e7d9ae; --evergreen:#1e3a2c; --evergreen-deep:#132922;
+    --ink:#2a2a1e; --brass:#9c7a3e; --brass-light:#c9a968;
+    --line: rgba(30,58,44,0.18); --paper-shadow: 0 1px 0 rgba(30,58,44,0.06), 0 10px 24px -14px rgba(20,30,20,0.3);
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--buttermilk); color:var(--ink); font-family:'Cormorant Garamond', serif; font-size:19px; line-height:1.7;}
+  body::before{content:""; position:fixed; inset:0; pointer-events:none; z-index:2; opacity:0.5; mix-blend-mode:multiply;
+    background-image:radial-gradient(rgba(30,58,44,0.035) 1px, transparent 1px); background-size:3px 3px;}
+  a{color:inherit;}
+  .eyebrow{font-family:'Special Elite', monospace; font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:var(--brass);}
+  header{background:var(--evergreen); color:var(--buttermilk); padding:22px clamp(20px,5vw,48px); display:flex; align-items:center; justify-content:space-between;}
+  header .wordmark{font-family:'IM Fell English', serif; font-style:italic; font-size:20px;}
+  .nav-links{display:flex; gap:20px;}
+  header a.nav-link{font-family:'Special Elite', monospace; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; text-decoration:none; color:var(--brass-light); border-bottom:1px solid var(--brass-light); padding-bottom:2px;}
+
+  .hero{text-align:center; padding:72px 24px 56px; background:radial-gradient(120% 100% at 50% 0%, var(--evergreen) 0%, var(--evergreen-deep) 75%); color:var(--buttermilk);}
+  .hero .eyebrow{color:var(--brass-light); display:block; margin-bottom:14px;}
+  .hero h1{font-family:'IM Fell English', serif; font-style:italic; font-weight:400; font-size:clamp(28px,4.5vw,38px); margin:0;}
+
+  main{max-width:620px; margin:0 auto; padding:64px 24px 40px;}
+
+  .lead{
+    font-family:'IM Fell English', serif; font-style:italic; font-size:24px; color:var(--evergreen);
+    text-align:center; margin:0 0 48px; line-height:1.5;
+  }
+
+  .body-copy p{margin:0 0 22px; font-size:18px;}
+  .body-copy p:first-letter{
+    font-family:'IM Fell English', serif; font-size:44px; float:left; line-height:0.8;
+    margin:6px 8px 0 0; color:var(--brass);
+  }
+
+  .sprig-divider{display:flex; justify-content:center; padding:20px 0 40px; color:var(--brass);}
+  .sprig-divider svg{width:56px; height:auto;}
+
+  .principles{
+    background:#faf3de; border:1px solid var(--line); box-shadow:var(--paper-shadow);
+    padding:32px clamp(24px,5vw,40px); margin:48px 0;
+  }
+  .principles h2{
+    font-family:'IM Fell English', serif; font-style:italic; font-weight:400; font-size:22px;
+    color:var(--evergreen); text-align:center; margin:0 0 24px;
+  }
+  .principles ul{list-style:none; margin:0; padding:0;}
+  .principles li{
+    display:flex; gap:14px; margin-bottom:16px; font-size:17px; align-items:baseline;
+  }
+  .principles li:last-child{margin-bottom:0;}
+  .principles li::before{
+    content:"—"; color:var(--brass); flex-shrink:0;
+  }
+
+  .signature{
+    text-align:center; margin-top:56px;
+  }
+  .signature .curator{
+    font-family:'Caveat', cursive; font-size:26px; color:var(--evergreen);
+  }
+  .signature .role{
+    display:block; margin-top:4px; font-family:'Special Elite', monospace; font-size:10.5px;
+    letter-spacing:0.1em; text-transform:uppercase; color:var(--brass);
+  }
+
+  .cta-row{text-align:center; margin:56px 0 0;}
+  .cta{
+    display:inline-block; font-family:'Special Elite', monospace; font-size:12px; letter-spacing:0.1em;
+    text-transform:uppercase; text-decoration:none; color:var(--buttermilk); background:var(--evergreen);
+    padding:13px 26px;
+  }
+  .cta:hover{background:var(--evergreen-deep);}
+
+  footer{background:var(--evergreen-deep); color:var(--buttermilk); text-align:center; padding:44px 24px; margin-top:60px;}
+  footer .wordmark2{font-family:'IM Fell English', serif; font-style:italic; font-size:22px; display:block; margin-bottom:8px;}
+  footer .root-reason{font-family:'Special Elite', monospace; font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:var(--brass-light);}
+</style>
+</head>
+<body>
+
+<header>
+  <span class="wordmark">r&amp;r</span>
+  <div class="nav-links">
+    <a class="nav-link" href="index.html">the cabinet</a>
+  </div>
+</header>
+
+<section class="hero">
+  <span class="eyebrow">about</span>
+  <h1>why this shelf exists</h1>
+</section>
+
+<main>
+  <p class="lead">root &amp; reason — because every thought worth keeping has both.</p>
+
+  <div class="body-copy">
+    <p>r&amp;r started with a simple noticing: the most honest things people say are rarely said to a crowd. they're said quietly — in a letter never sent, a comment left on a stranger's post, a passing line about the weather that somehow means more than it should.</p>
+    <p>this is a place built for those small, honest things. not a feed. not a platform chasing your attention. just a shelf, tended by hand, where a thought from Lagos can sit next to one from Reykjavík, and both make a little more sense of the world.</p>
+    <p>everything here is collected, read, and chosen by one person — not an algorithm. what stays up isn't decided by what performs best. it's decided by what feels true.</p>
+  </div>
+
+  <div class="sprig-divider">
+    <svg viewBox="0 0 100 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs><filter id="crab"><feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.5"/></filter></defs>
+      <g filter="url(#crab)" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+        <path d="M10 30 C 30 10, 70 10, 90 30"/>
+        <circle cx="50" cy="24" r="2.6" fill="currentColor" stroke="none"/>
+        <path d="M42 20 C 38 12, 40 6, 46 2"/>
+        <path d="M58 20 C 62 12, 60 6, 54 2"/>
+      </g>
+    </svg>
+  </div>
+
+  <div class="principles">
+    <h2>a few things this place believes</h2>
+    <ul>
+      <li>no algorithm decides what you see here — a person does.</li>
+      <li>every submission is read before it's ever shared.</li>
+      <li>anonymity is welcome; performance isn't required.</li>
+      <li>this grows slowly, on purpose.</li>
+    </ul>
+  </div>
+
+  <div class="signature">
+    <span class="curator">— r&amp;r</span>
+    <span class="role">curator of the shelf</span>
+  </div>
+
+  <div class="cta-row">
+    <a class="cta" href="index.html">back to the cabinet</a>
+  </div>
+</main>
+
+<footer>
+  <span class="wordmark2">r&amp;r</span>
+  <div class="root-reason">root &amp; reason</div>
+</footer>
+
+</body>
+</html>

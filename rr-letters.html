@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>r&amp;r — letters</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Caveat:wght@500;600&family=Special+Elite&display=swap');
+
+  :root{
+    --buttermilk:#f4ecd5;
+    --beige:#e7d9ae;
+    --evergreen:#1e3a2c;
+    --evergreen-deep:#132922;
+    --ink:#2a2a1e;
+    --brass:#9c7a3e;
+    --brass-light:#c9a968;
+    --line: rgba(30,58,44,0.18);
+    --paper-shadow: 0 1px 0 rgba(30,58,44,0.06), 0 10px 24px -14px rgba(20,30,20,0.3);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--buttermilk);
+    color:var(--ink);
+    font-family:'Cormorant Garamond', serif;
+    font-size:19px;
+    line-height:1.65;
+  }
+  body::before{
+    content:"";
+    position:fixed; inset:0; pointer-events:none; z-index:2;
+    opacity:0.5; mix-blend-mode:multiply;
+    background-image:radial-gradient(rgba(30,58,44,0.035) 1px, transparent 1px);
+    background-size:3px 3px;
+  }
+  a{color:inherit;}
+  .eyebrow{
+    font-family:'Special Elite', monospace;
+    font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:var(--brass);
+  }
+
+  header{
+    background:var(--evergreen);
+    color:var(--buttermilk);
+    padding:22px clamp(20px,5vw,48px);
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  header a.nav-link{
+    font-family:'Special Elite', monospace; font-size:11px; letter-spacing:0.1em; text-transform:uppercase;
+    text-decoration:none; color:var(--brass-light); border-bottom:1px solid var(--brass-light); padding-bottom:2px;
+  }
+  header .wordmark{font-family:'IM Fell English', serif; font-style:italic; font-size:20px;}
+  .nav-links{display:flex; gap:20px;}
+
+  .hero{
+    text-align:center;
+    padding:72px 24px 56px;
+    background:radial-gradient(120% 100% at 50% 0%, var(--evergreen) 0%, var(--evergreen-deep) 75%);
+    color:var(--buttermilk);
+  }
+  .hero .eyebrow{color:var(--brass-light); display:block; margin-bottom:14px;}
+  .hero h1{
+    font-family:'IM Fell English', serif; font-style:italic; font-weight:400;
+    font-size:clamp(30px,5vw,44px); margin:0 0 16px;
+  }
+  .hero p{max-width:48ch; margin:0 auto; color:rgba(244,236,213,0.8); font-size:17px;}
+
+  main{max-width:680px; margin:0 auto; padding:64px 24px 100px;}
+
+  .filter-row{
+    display:flex; justify-content:center; gap:10px; margin-bottom:44px; flex-wrap:wrap;
+  }
+  .filter-pill{
+    font-family:'Special Elite', monospace; font-size:10.5px; letter-spacing:0.06em; text-transform:uppercase;
+    padding:8px 16px; border:1px solid var(--evergreen); background:transparent; color:var(--evergreen);
+    cursor:pointer; border-radius:999px; transition:background .2s ease, color .2s ease;
+  }
+  .filter-pill.active{background:var(--evergreen); color:var(--buttermilk);}
+  .filter-pill:focus-visible{outline:2px solid var(--brass); outline-offset:3px;}
+
+  .letters{display:flex; flex-direction:column; gap:28px;}
+  .letter{
+    background:#faf3de;
+    border:1px solid var(--line);
+    box-shadow:var(--paper-shadow);
+    padding:30px 32px;
+    position:relative;
+  }
+  .letter::before{
+    content:"";
+    position:absolute; top:-9px; left:26px;
+    width:18px; height:18px; border-radius:50%;
+    background:var(--brass);
+    box-shadow:0 1px 3px rgba(0,0,0,0.25);
+  }
+  .letter .founding{
+    position:absolute; top:14px; right:18px;
+    font-family:'Special Elite', monospace; font-size:9px; letter-spacing:0.08em; text-transform:uppercase;
+    color:var(--brass);
+  }
+  .letter .salut{
+    font-family:'Caveat', cursive; font-size:23px; color:var(--evergreen); display:block; margin-bottom:12px;
+  }
+  .letter p.body-text{margin:0 0 14px; font-size:18px; white-space:pre-line;}
+  .letter .sign{font-family:'Caveat', cursive; font-size:19px; color:rgba(42,42,30,0.65);}
+
+  .empty-note{text-align:center; color:rgba(42,42,30,0.5); font-style:italic; font-size:17px; padding:40px 0;}
+
+  footer{
+    background:var(--evergreen-deep); color:var(--buttermilk);
+    text-align:center; padding:44px 24px;
+  }
+  footer .wordmark{font-family:'IM Fell English', serif; font-style:italic; font-size:22px; display:block; margin-bottom:8px;}
+  footer .root-reason{
+    font-family:'Special Elite', monospace; font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:var(--brass-light);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <span class="wordmark">r&amp;r</span>
+  <div class="nav-links">
+    <a class="nav-link" href="index.html">the cabinet</a>
+    <a class="nav-link" href="rr-about.html">about</a>
+    <a class="nav-link" href="rr-submit.html?type=letter">leave a letter</a>
+  </div>
+</header>
+
+<section class="hero">
+  <span class="eyebrow">letters</span>
+  <h1>the ones we don't sign</h1>
+  <p>anonymous letters, written to no one and everyone. these are usually the ones people carry with them longest.</p>
+</section>
+
+<main>
+  <div class="letters" id="lettersList">
+    <p class="empty-note">opening the drawer...</p>
+  </div>
+</main>
+
+<footer>
+  <span class="wordmark">r&amp;r</span>
+  <div class="root-reason">root &amp; reason</div>
+</footer>
+
+<script>
+  const foundingLetters = [
+    {
+      salut: 'to whoever needs this today,',
+      body: "i don't know what you're carrying, but i want you to know that someone, somewhere, made it through a day exactly like yours. you will too. that's not a promise — it's just what i've seen happen, over and over.",
+      sign: 'written by a stranger, folded and left here',
+      founding: true,
+      ts: 2
+    },
+    {
+      salut: 'to my younger self,',
+      body: 'you will not ruin your life by changing your mind. you will not embarrass anyone by asking for help. slow down — you have more time than you think, and less to prove than you believe.',
+      sign: 'written by a stranger, folded and left here',
+      founding: true,
+      ts: 1
+    }
+  ];
+
+  function escapeHtml(str){
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  function render(){
+    const container = document.getElementById('lettersList');
+    container.innerHTML = foundingLetters.map(l => `
+      <div class="letter">
+        <span class="founding">founding letter</span>
+        <span class="salut">${escapeHtml(l.salut)}</span>
+        <p class="body-text">${escapeHtml(l.body)}</p>
+        <span class="sign">${l.sign}</span>
+      </div>
+    `).join('');
+  }
+  render();
+</script>
+
+</body>
+</html>

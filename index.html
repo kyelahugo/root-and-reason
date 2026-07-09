@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>r&amp;r — root &amp; reason</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Caveat:wght@500;600&family=Special+Elite&display=swap');
+
+  :root{
+    --buttermilk:#f4ecd5;
+    --beige:#e7d9ae;
+    --evergreen:#1e3a2c;
+    --evergreen-deep:#132922;
+    --ink:#2a2a1e;
+    --brass:#9c7a3e;
+    --brass-light:#c9a968;
+    --wood:#6b4a30;
+    --wood-dark:#4a3220;
+    --line: rgba(30,58,44,0.18);
+    --paper-shadow: 0 1px 0 rgba(30,58,44,0.06), 0 8px 20px -12px rgba(20,30,20,0.25);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--buttermilk);
+    color:var(--ink);
+    font-family:'Cormorant Garamond', serif;
+    line-height:1.6;
+  }
+  body::before{
+    content:"";
+    position:fixed; inset:0; pointer-events:none; z-index:2;
+    opacity:0.5; mix-blend-mode:multiply;
+    background-image:radial-gradient(rgba(30,58,44,0.035) 1px, transparent 1px);
+    background-size:3px 3px;
+  }
+  a{color:inherit;}
+  .eyebrow{
+    font-family:'Special Elite', monospace; font-size:11.5px; letter-spacing:0.16em;
+    text-transform:uppercase; color:var(--brass);
+  }
+
+  header{
+    position:fixed; top:0; left:0; right:0; z-index:30;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:22px clamp(20px,5vw,48px);
+    pointer-events:none;
+  }
+  .wordmark{
+    font-family:'IM Fell English', serif; font-style:italic; font-size:22px;
+    pointer-events:auto; color:var(--buttermilk); transition:color .3s ease;
+  }
+  header.on-light .wordmark{color:var(--evergreen);}
+  .tagline-small{
+    font-family:'Special Elite', monospace; font-size:10px; letter-spacing:0.14em;
+    text-transform:uppercase; opacity:0.75; pointer-events:auto;
+    color:var(--buttermilk); transition:color .3s ease;
+  }
+  header.on-light .tagline-small{color:var(--evergreen);}
+
+  .hero{
+    position:relative; min-height:100svh;
+    background:radial-gradient(120% 100% at 50% 0%, var(--evergreen) 0%, var(--evergreen-deep) 75%);
+    color:var(--buttermilk);
+    display:flex; align-items:center; justify-content:center; text-align:center;
+    padding:120px 24px 100px; overflow:hidden;
+  }
+  .hero-inner{position:relative; z-index:2; max-width:720px;}
+  .hero h1{
+    font-family:'IM Fell English', serif; font-style:italic; font-weight:400;
+    font-size:clamp(30px, 5vw, 46px); line-height:1.35; margin:0;
+  }
+  .hero-rule{width:46px; height:1px; background:var(--brass-light); margin:26px auto;}
+  .hero p.sub{
+    font-family:'Special Elite', monospace; font-size:11px; letter-spacing:0.18em;
+    text-transform:uppercase; color:var(--brass-light); margin:0 0 40px;
+  }
+  .begin-btn{
+    display:inline-flex; align-items:center; gap:10px;
+    font-family:'Special Elite', monospace; font-size:12px; letter-spacing:0.14em; text-transform:uppercase;
+    text-decoration:none; color:var(--evergreen-deep); background:var(--buttermilk);
+    border:1px solid var(--buttermilk); padding:13px 26px; transition:background .25s ease, color .25s ease;
+  }
+  .begin-btn:hover, .begin-btn:focus-visible{background:transparent; color:var(--buttermilk);}
+  .begin-btn:focus-visible{outline:2px solid var(--brass-light); outline-offset:4px;}
+
+  .crayon-illus{position:absolute; opacity:0.85;}
+  .il-plant{left:4%; bottom:-2%; width:min(24vw,220px);}
+  .il-bottle{right:5%; bottom:2%; width:min(15vw,140px);}
+  .il-herbs{top:6%; left:50%; transform:translateX(-50%); width:min(30vw,300px);}
+  @media (max-width:720px){
+    .il-plant{width:130px; left:-10px;}
+    .il-bottle{width:90px; right:-6px;}
+    .il-herbs{width:210px;}
+  }
+
+  /* ---------- cabinet ---------- */
+  .cabinet-section{
+    max-width:940px; margin:0 auto; padding:90px 24px 60px; text-align:center;
+  }
+  .cabinet-head h2{
+    font-family:'IM Fell English', serif; font-style:italic; font-weight:400;
+    font-size:clamp(26px,4vw,34px); color:var(--evergreen); margin:12px 0 0;
+  }
+  .cabinet-head p{
+    max-width:46ch; margin:14px auto 0; color:rgba(42,42,30,0.7); font-size:16.5px;
+  }
+
+  .cabinet{
+    margin-top:56px;
+    background:linear-gradient(180deg, rgba(155,122,78,0.12) 0%, rgba(155,122,78,0.05) 100%);
+    border:1px solid var(--line);
+    padding:8px clamp(16px,4vw,36px) 0;
+  }
+  .shelf-row{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:clamp(10px,3vw,28px);
+    padding-bottom:26px;
+    border-bottom:10px solid var(--wood);
+    box-shadow:0 6px 0 -2px var(--wood-dark);
+    margin-bottom:44px;
+  }
+  .shelf-row:last-child{border-bottom:10px solid var(--wood); margin-bottom:24px;}
+  @media (max-width:640px){
+    .shelf-row{grid-template-columns:repeat(2,1fr);}
+  }
+
+  .jar-link{
+    display:flex; flex-direction:column; align-items:center;
+    text-decoration:none; color:var(--ink);
+    padding:18px 6px 0;
+    transition:transform .25s ease;
+  }
+  .jar-link:hover, .jar-link:focus-visible{transform:translateY(-6px);}
+  .jar-link:focus-visible{outline:2px solid var(--brass); outline-offset:4px;}
+  .jar-link svg{width:clamp(64px,9vw,88px); height:auto;}
+  .jar-label{
+    margin-top:10px;
+    font-family:'Special Elite', monospace;
+    font-size:11px; letter-spacing:0.06em; text-transform:uppercase;
+    color:var(--evergreen);
+    max-width:120px;
+  }
+  .jar-sub{
+    display:block; margin-top:3px;
+    font-family:'Caveat', cursive; font-style:italic; font-size:14px;
+    color:var(--brass);
+  }
+
+  footer{
+    background:var(--evergreen-deep); color:var(--buttermilk);
+    margin-top:20px; padding:56px 24px 40px; text-align:center;
+  }
+  footer .wordmark2{font-family:'IM Fell English', serif; font-style:italic; font-size:26px; display:block; margin-bottom:10px; color:var(--buttermilk);}
+  footer .root-reason{
+    font-family:'Special Elite', monospace; font-size:11px; letter-spacing:0.16em; text-transform:uppercase;
+    color:var(--brass-light); margin-bottom:24px;
+  }
+  footer .ethos{
+    font-family:'Cormorant Garamond', serif; font-style:italic; font-size:17px;
+    color:rgba(244,236,213,0.75); max-width:40ch; margin:0 auto 30px;
+  }
+  footer .copy{font-family:'Special Elite', monospace; font-size:10px; letter-spacing:0.06em; color:rgba(244,236,213,0.4);}
+
+  @media (prefers-reduced-motion:no-preference){
+    .fade-in{animation:fadeIn .8s ease both;}
+  }
+  @keyframes fadeIn{from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);}}
+</style>
+</head>
+<body>
+
+<header>
+  <span class="wordmark">r&amp;r</span>
+  <a class="tagline-small" href="rr-about.html" style="text-decoration:none; border-bottom:1px solid transparent;">root &amp; reason · about</a>
+</header>
+
+<section class="hero">
+  <svg class="crayon-illus il-plant" viewBox="0 0 200 220" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs><filter id="cr1"><feTurbulence type="fractalNoise" baseFrequency="0.018" numOctaves="2" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="4"/></filter></defs>
+    <g filter="url(#cr1)" stroke="#c9a968" stroke-width="2.2" stroke-linecap="round">
+      <path d="M60 210 L60 130"/><path d="M40 200 L160 200"/><path d="M50 200 L50 150 L170 150 L170 200"/>
+      <path d="M60 130 C 30 120, 20 90, 35 60"/><path d="M60 130 C 90 118, 100 88, 85 55"/>
+      <path d="M60 150 C 40 140, 25 118, 30 95"/><path d="M60 150 C 80 140, 95 118, 90 95"/>
+    </g>
+  </svg>
+  <svg class="crayon-illus il-bottle" viewBox="0 0 120 220" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs><filter id="cr2"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="3.5"/></filter></defs>
+    <g filter="url(#cr2)" stroke="#c9a968" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M45 20 L75 20 L75 45 L92 70 L92 195 C92 205 82 210 60 210 C38 210 28 205 28 195 L28 70 L45 45 Z"/>
+      <path d="M45 20 L45 10 L75 10 L75 20"/><rect x="38" y="110" width="44" height="34"/><path d="M38 118 L82 118"/>
+    </g>
+  </svg>
+  <svg class="crayon-illus il-herbs" viewBox="0 0 300 140" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs><filter id="cr3"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="3"/></filter></defs>
+    <g filter="url(#cr3)" stroke="#c9a968" stroke-width="2" stroke-linecap="round">
+      <path d="M40 0 L40 20"/><path d="M20 8 L60 8"/><path d="M40 20 L40 90"/>
+      <path d="M40 40 C 25 45, 15 60, 18 78"/><path d="M40 55 C 55 60, 65 74, 62 90"/>
+      <path d="M150 0 L150 16"/><path d="M132 8 L168 8"/><path d="M150 16 L150 100"/>
+      <path d="M150 35 C 132 40, 122 58, 128 78"/><path d="M150 50 C 168 55, 178 72, 172 92"/><path d="M150 65 C 132 70, 124 85, 130 100"/>
+      <path d="M260 0 L260 18"/><path d="M242 9 L278 9"/><path d="M260 18 L260 85"/>
+      <path d="M260 38 C 244 43, 236 58, 240 74"/><path d="M260 55 C 276 60, 284 74, 280 88"/>
+    </g>
+  </svg>
+
+  <div class="hero-inner fade-in">
+    <h1>every person carries a thought<br>that someone else needs to hear.</h1>
+    <div class="hero-rule"></div>
+    <p class="sub">an open journal of the world's small perspectives</p>
+    <a class="begin-btn" href="#cabinet">begin reading ↓</a>
+  </div>
+</section>
+
+<section class="cabinet-section" id="cabinet">
+  <div class="cabinet-head">
+    <span class="eyebrow">the cabinet</span>
+    <h2>pick a jar</h2>
+    <p>each one holds something different — pull the cork and see what's inside.</p>
+  </div>
+
+  <div class="cabinet">
+    <div class="shelf-row">
+      <a class="jar-link" href="rr-today.html">
+        <svg viewBox="0 0 90 110" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs><filter id="j1"><feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.5"/></filter></defs>
+          <g filter="url(#j1)">
+            <rect x="18" y="30" width="54" height="66" rx="6" fill="#faf3de" stroke="#1e3a2c" stroke-width="2"/>
+            <rect x="24" y="14" width="42" height="18" rx="3" fill="#9c7a3e" stroke="#1e3a2c" stroke-width="2"/>
+            <rect x="26" y="52" width="38" height="24" fill="#f4ecd5" stroke="#9c7a3e" stroke-width="1.4"/>
+            <path d="M45 58 L45 30" stroke="#1e3a2c" stroke-width="2" stroke-linecap="round"/>
+            <path d="M45 40 C 38 36, 33 30, 34 22" stroke="#1e3a2c" stroke-width="2" stroke-linecap="round"/>
+            <path d="M45 46 C 52 42, 57 36, 56 28" stroke="#1e3a2c" stroke-width="2" stroke-linecap="round"/>
+          </g>
+        </svg>
+        <span class="jar-label">today's thought</span>
+        <span class="jar-sub">one question a day</span>
+      </a>
+
+      <a class="jar-link" href="rr-share.html">
+        <svg viewBox="0 0 90 110" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <g filter="url(#j1)">
+            <rect x="18" y="30" width="54" height="66" rx="6" fill="#faf3de" stroke="#1e3a2c" stroke-width="2"/>
+            <rect x="24" y="14" width="42" height="18" rx="3" fill="#9c7a3e" stroke="#1e3a2c" stroke-width="2"/>
+            <rect x="26" y="52" width="38" height="24" fill="#f4ecd5" stroke="#9c7a3e" stroke-width="1.4"/>
+            <path d="M32 40 L58 40" stroke="#1e3a2c" stroke-width="2" stroke-linecap="round"/>
+            <path d="M32 47 L52 47" stroke="#1e3a2c" stroke-width="2" stroke-linecap="round"/>
+          </g>
+        </svg>
+        <span class="jar-label">share a thought</span>
+        <span class="jar-sub">write anything</span>
+      </a>
+
+      <a class="jar-link" href="rr-where.html">
+        <svg viewBox="0 0 90 110" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <g filter="url(#j1)">
+            <rect x="18" y="30" width="54" height="66" rx="6" fill="#faf3de" stroke="#1e3a2c" stroke-width="2"/>
+            <rect x="24" y="14" width="42" height="18" rx="3" fill="#9c7a3e" stroke="#1e3a2c" stroke-width="2"/>
+            <rect x="26" y="52" width="38" height="24" fill="#f4ecd5" stroke="#9c7a3e" stroke-width="1.4"/>
+            <circle cx="45" cy="38" r="10" stroke="#1e3a2c" stroke-width="2"/>
+            <path d="M35 38 L55 38 M45 28 L45 48" stroke="#1e3a2c" stroke-width="1.6"/>
+          </g>
+        </svg>
+        <span class="jar-label">where are you?</span>
+        <span class="jar-sub">a window into today</span>
+      </a>
+    </div>
+
+    <div class="shelf-row">
+      <a class="jar-link" href="rr-ask.html">
+        <svg viewBox="0 0 90 110" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <g filter="url(#j1)">
+            <rect x="18" y="30" width="54" height="66" rx="6" fill="#faf3de" stroke="#1e3a2c" stroke-width="2"/>
+            <rect x="24" y="14" width="42" height="18" rx="3" fill="#9c7a3e" stroke="#1e3a2c" stroke-width="2"/>
+            <rect x="26" y="52" width="38" height="24" fill="#f4ecd5" stroke="#9c7a3e" stroke-width="1.4"/>
+            <text x="45" y="46" font-family="IM Fell English, serif" font-style="italic" font-size="22" fill="#1e3a2c" text-anchor="middle">?</text>
+          </g>
+        </svg>
+        <span class="jar-label">ask the world</span>
+        <span class="jar-sub">a softer forum</span>
+      </a>
+
+      <a class="jar-link" href="rr-letters.html">
+        <svg viewBox="0 0 90 110" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <g filter="url(#j1)">
+            <rect x="18" y="30" width="54" height="66" rx="6" fill="#faf3de" stroke="#1e3a2c" stroke-width="2"/>
+            <rect x="24" y="14" width="42" height="18" rx="3" fill="#9c7a3e" stroke="#1e3a2c" stroke-width="2"/>
+            <rect x="27" y="50" width="36" height="26" fill="#f4ecd5" stroke="#1e3a2c" stroke-width="1.8"/>
+            <path d="M27 50 L45 64 L63 50" stroke="#1e3a2c" stroke-width="1.8" fill="none"/>
+          </g>
+        </svg>
+        <span class="jar-label">letters</span>
+        <span class="jar-sub">the ones we don't sign</span>
+      </a>
+
+      <a class="jar-link" href="rr-collection.html">
+        <svg viewBox="0 0 90 110" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <g filter="url(#j1)">
+            <rect x="18" y="30" width="54" height="66" rx="6" fill="#faf3de" stroke="#1e3a2c" stroke-width="2"/>
+            <rect x="24" y="14" width="42" height="18" rx="3" fill="#9c7a3e" stroke="#1e3a2c" stroke-width="2"/>
+            <rect x="26" y="52" width="38" height="24" fill="#f4ecd5" stroke="#9c7a3e" stroke-width="1.4"/>
+            <path d="M45 30 l3.2 6.6 7.2 1-5.2 5.1 1.2 7.2-6.4-3.4-6.4 3.4 1.2-7.2-5.2-5.1 7.2-1z" fill="#9c7a3e" stroke="#1e3a2c" stroke-width="1.2"/>
+          </g>
+        </svg>
+        <span class="jar-label">today's collection</span>
+        <span class="jar-sub">curated by r&amp;r</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="wordmark2">r&amp;r</span>
+  <div class="root-reason">root &amp; reason</div>
+  <p class="ethos">no algorithms. no likes. just thoughts, left where someone might find them.</p>
+  <div class="copy">© 2026 r&amp;r — a slow corner of the internet</div>
+</footer>
+
+<script>
+  const header = document.querySelector('header');
+  const hero = document.querySelector('.hero');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.target === hero) header.classList.toggle('on-light', !e.isIntersecting);
+    });
+  }, { rootMargin: '-70px 0px 0px 0px', threshold: 0 });
+  io.observe(hero);
+</script>
+
+</body>
+</html>

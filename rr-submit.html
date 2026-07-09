@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>r&amp;r — leave something here</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Caveat:wght@500;600&family=Special+Elite&display=swap');
+
+  :root{
+    --buttermilk:#f4ecd5;
+    --beige:#e7d9ae;
+    --evergreen:#1e3a2c;
+    --evergreen-deep:#132922;
+    --ink:#2a2a1e;
+    --brass:#9c7a3e;
+    --brass-light:#c9a968;
+    --line: rgba(30,58,44,0.18);
+    --paper-shadow: 0 1px 0 rgba(30,58,44,0.06), 0 8px 20px -12px rgba(20,30,20,0.25);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--buttermilk);
+    color:var(--ink);
+    font-family:'Cormorant Garamond', serif;
+    font-size:19px;
+    line-height:1.6;
+  }
+  body::before{
+    content:"";
+    position:fixed; inset:0; pointer-events:none; z-index:2;
+    opacity:0.5; mix-blend-mode:multiply;
+    background-image:radial-gradient(rgba(30,58,44,0.035) 1px, transparent 1px);
+    background-size:3px 3px;
+  }
+  a{color:inherit;}
+  .eyebrow{
+    font-family:'Special Elite', monospace;
+    font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:var(--brass);
+  }
+
+  header{
+    background:var(--evergreen);
+    color:var(--buttermilk);
+    padding:22px clamp(20px,5vw,48px);
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  header a.back{
+    font-family:'Special Elite', monospace;
+    font-size:11px; letter-spacing:0.1em; text-transform:uppercase;
+    text-decoration:none; color:var(--brass-light);
+    border-bottom:1px solid var(--brass-light); padding-bottom:2px;
+  }
+  header .wordmark{font-family:'IM Fell English', serif; font-style:italic; font-size:20px;}
+
+  main{max-width:640px; margin:0 auto; padding:64px 24px 100px;}
+
+  .intro{text-align:center; margin-bottom:48px;}
+  .intro h1{
+    font-family:'IM Fell English', serif; font-style:italic; font-weight:400;
+    font-size:clamp(28px,4vw,38px); color:var(--evergreen); margin:0 0 14px;
+  }
+  .intro p{max-width:44ch; margin:0 auto; color:rgba(42,42,30,0.75); font-size:17px;}
+
+  .type-row{
+    display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-bottom:28px;
+  }
+  .type-pill{
+    font-family:'Special Elite', monospace;
+    font-size:11px; letter-spacing:0.06em; text-transform:uppercase;
+    padding:9px 16px; border:1px solid var(--evergreen); background:transparent; color:var(--evergreen);
+    cursor:pointer; border-radius:999px; transition:background .2s ease, color .2s ease;
+  }
+  .type-pill.active{background:var(--evergreen); color:var(--buttermilk);}
+  .type-pill:focus-visible{outline:2px solid var(--brass); outline-offset:3px;}
+
+  .prompt-line{
+    text-align:center; font-family:'Cormorant Garamond', serif; font-style:italic;
+    font-size:18px; color:var(--brass); margin-bottom:24px; min-height:24px;
+  }
+
+  form{
+    background:#faf3de;
+    border:1px solid var(--line);
+    box-shadow:var(--paper-shadow);
+    padding:clamp(24px,5vw,36px);
+  }
+  .row{margin-bottom:18px;}
+  .row label{
+    display:block; font-family:'Special Elite', monospace; font-size:10.5px;
+    letter-spacing:0.08em; text-transform:uppercase; color:var(--brass); margin-bottom:8px;
+  }
+  .row input, .row textarea{
+    width:100%; border:none; border-bottom:1px solid var(--line);
+    background:transparent; font-family:'Cormorant Garamond', serif;
+    font-size:18px; color:var(--ink); padding:6px 2px; outline:none;
+  }
+  .row textarea{
+    font-style:italic; resize:vertical; min-height:120px; border:1px dashed var(--line); padding:14px;
+  }
+  .row input:focus, .row textarea:focus{border-color:var(--brass);}
+  .two-col{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  @media (max-width:480px){.two-col{grid-template-columns:1fr;}}
+
+  .form-foot{
+    display:flex; align-items:center; justify-content:space-between; margin-top:8px;
+    flex-wrap:wrap; gap:12px;
+  }
+  .anon-note{font-family:'Special Elite', monospace; font-size:10px; color:rgba(42,42,30,0.5); letter-spacing:0.04em;}
+  button.submit{
+    font-family:'Special Elite', monospace; font-size:12px; letter-spacing:0.1em; text-transform:uppercase;
+    background:var(--evergreen); color:var(--buttermilk); border:none; padding:12px 22px; cursor:pointer;
+    transition:background .2s ease;
+  }
+  button.submit:hover{background:var(--evergreen-deep);}
+  button.submit:disabled{opacity:0.5; cursor:default;}
+
+  .status{
+    text-align:center; font-family:'Caveat', cursive; font-size:20px; color:var(--evergreen);
+    margin-top:18px; min-height:26px;
+  }
+
+  .shelf-head{
+    margin:72px 0 26px; text-align:center; border-top:1px dashed var(--line); padding-top:44px;
+  }
+  .shelf-head h2{font-family:'IM Fell English', serif; font-style:italic; font-weight:400; font-size:24px; color:var(--evergreen); margin:8px 0 0;}
+
+  .entries{display:flex; flex-direction:column; gap:16px;}
+  .entry{
+    background:var(--buttermilk); border:1px solid var(--line); box-shadow:var(--paper-shadow);
+    padding:18px 22px;
+  }
+  .entry .meta{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:8px;}
+  .entry .tag{font-family:'Special Elite', monospace; font-size:9.5px; letter-spacing:0.08em; text-transform:uppercase; color:var(--brass);}
+  .entry .by{font-family:'Caveat', cursive; font-size:18px; color:var(--evergreen);}
+  .entry p{margin:0; font-size:17px;}
+  .empty-note{text-align:center; color:rgba(42,42,30,0.5); font-style:italic; font-size:16px;}
+</style>
+</head>
+<body>
+
+<header>
+  <span class="wordmark">r&amp;r</span>
+  <a class="back" href="index.html">back to the cabinet</a>
+</header>
+
+<main>
+  <div class="intro">
+    <h1>leave something here</h1>
+    <p>write a thought, a letter, a note about where you are, or an answer to today's question. it's kept — and read by whoever wanders in next.</p>
+  </div>
+
+  <div class="type-row" id="typeRow">
+    <button class="type-pill" data-type="today" data-prompt="today's question: “what changed your life?”">today's thought</button>
+    <button class="type-pill active" data-type="thought" data-prompt="no prompt — just whatever's sitting with you today.">a thought</button>
+    <button class="type-pill" data-type="postcard" data-prompt="what's it like where you are, right now?">where are you?</button>
+    <button class="type-pill" data-type="answer" data-prompt="answer: “how do you find calm on hard days?”">an answer</button>
+    <button class="type-pill" data-type="letter" data-prompt="write to whoever might need to read it.">a letter</button>
+  </div>
+
+  <p class="prompt-line" id="promptLine">no prompt — just whatever's sitting with you today.</p>
+
+  <form id="entryForm" name="entries" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+    <input type="hidden" name="form-name" value="entries">
+    <input type="hidden" name="type" id="typeField" value="thought">
+    <p style="display:none;"><label>Don't fill this out if you're human: <input name="bot-field" /></label></p>
+
+    <div class="row">
+      <label for="content" id="contentLabel">your words</label>
+      <textarea id="content" name="content" required placeholder="start writing..."></textarea>
+    </div>
+    <div class="two-col">
+      <div class="row">
+        <label for="name">name (optional)</label>
+        <input id="name" name="name" type="text" placeholder="anonymous">
+      </div>
+      <div class="row">
+        <label for="place">where you're writing from (optional)</label>
+        <input id="place" name="place" type="text" placeholder="e.g. Lisbon">
+      </div>
+    </div>
+    <div class="form-foot">
+      <span class="anon-note">read by the curator before it's ever shared</span>
+      <button class="submit" type="submit" id="submitBtn">leave it here</button>
+    </div>
+    <p class="status" id="status"></p>
+  </form>
+
+  <div class="shelf-head">
+    <span class="eyebrow">a note</span>
+    <h2>what happens after you submit</h2>
+  </div>
+  <p class="empty-note">every submission is read by hand before it's added to the shelf — nothing appears automatically. check back on the page you came from in a few days.</p>
+</main>
+
+<script>
+  let currentType = 'thought';
+
+  const typeLabels = {
+    today: 'your answer',
+    thought: 'your words',
+    letter: 'your letter',
+    postcard: 'your window into today',
+    answer: 'your answer'
+  };
+  const typePrompts = {
+    today: 'today\u2019s question: \u201cwhat changed your life?\u201d',
+    thought: 'no prompt — just whatever\u2019s sitting with you today.',
+    letter: 'write to whoever might need to read it.',
+    postcard: 'what\u2019s it like where you are, right now?',
+    answer: 'answer: \u201chow do you find calm on hard days?\u201d'
+  };
+
+  const typeRow = document.getElementById('typeRow');
+  const promptLine = document.getElementById('promptLine');
+  const contentLabel = document.getElementById('contentLabel');
+  const typeField = document.getElementById('typeField');
+  const form = document.getElementById('entryForm');
+  const statusEl = document.getElementById('status');
+  const submitBtn = document.getElementById('submitBtn');
+
+  function setType(type){
+    currentType = type;
+    typeField.value = type;
+    promptLine.textContent = typePrompts[type];
+    contentLabel.textContent = typeLabels[type];
+    document.querySelectorAll('.type-pill').forEach(p => {
+      p.classList.toggle('active', p.dataset.type === type);
+    });
+  }
+
+  typeRow.addEventListener('click', (e) => {
+    const btn = e.target.closest('.type-pill');
+    if(!btn) return;
+    setType(btn.dataset.type);
+  });
+
+  function applyPresetType(){
+    const params = new URLSearchParams(window.location.search);
+    const preset = params.get('type');
+    if(preset && typeLabels[preset]) setType(preset);
+  }
+  applyPresetType();
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const content = document.getElementById('content').value.trim();
+    if(!content) return;
+
+    submitBtn.disabled = true;
+    statusEl.textContent = 'leaving it on the shelf...';
+
+    try{
+      const formData = new FormData(form);
+      const body = new URLSearchParams(formData).toString();
+      const res = await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body
+      });
+      if(!res.ok) throw new Error('submit failed');
+      form.reset();
+      setType(currentType);
+      statusEl.textContent = 'left it here. thank you.';
+    }catch(err){
+      statusEl.textContent = 'something went wrong — please try again.';
+    }finally{
+      submitBtn.disabled = false;
+      setTimeout(() => { statusEl.textContent=''; }, 4000);
+    }
+  });
+</script>
+
+</body>
+</html>

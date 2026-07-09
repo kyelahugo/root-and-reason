@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>r&amp;r — today's collection</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Caveat:wght@500;600&family=Special+Elite&display=swap');
+  :root{
+    --buttermilk:#f4ecd5; --beige:#e7d9ae; --evergreen:#1e3a2c; --evergreen-deep:#132922;
+    --ink:#2a2a1e; --brass:#9c7a3e; --brass-light:#c9a968;
+    --line: rgba(30,58,44,0.18); --paper-shadow: 0 1px 0 rgba(30,58,44,0.06), 0 10px 24px -14px rgba(20,30,20,0.3);
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--buttermilk); color:var(--ink); font-family:'Cormorant Garamond', serif; font-size:19px; line-height:1.65;}
+  body::before{content:""; position:fixed; inset:0; pointer-events:none; z-index:2; opacity:0.5; mix-blend-mode:multiply;
+    background-image:radial-gradient(rgba(30,58,44,0.035) 1px, transparent 1px); background-size:3px 3px;}
+  a{color:inherit;}
+  .eyebrow{font-family:'Special Elite', monospace; font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:var(--brass);}
+  header{background:var(--evergreen); color:var(--buttermilk); padding:22px clamp(20px,5vw,48px); display:flex; align-items:center; justify-content:space-between;}
+  header .wordmark{font-family:'IM Fell English', serif; font-style:italic; font-size:20px;}
+  .nav-links{display:flex; gap:20px;}
+  header a.nav-link{font-family:'Special Elite', monospace; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; text-decoration:none; color:var(--brass-light); border-bottom:1px solid var(--brass-light); padding-bottom:2px;}
+  .hero{text-align:center; padding:72px 24px 40px; background:radial-gradient(120% 100% at 50% 0%, var(--evergreen) 0%, var(--evergreen-deep) 75%); color:var(--buttermilk);}
+  .hero .eyebrow{color:var(--brass-light); display:block; margin-bottom:14px;}
+  .hero h1{font-family:'IM Fell English', serif; font-style:italic; font-weight:400; font-size:clamp(28px,4.5vw,38px); margin:0 0 16px;}
+  .hero .curator-note{font-family:'Caveat', cursive; font-size:21px; color:rgba(244,236,213,0.85); max-width:44ch; margin:0 auto;}
+  main{max-width:820px; margin:0 auto; padding:64px 24px 100px;}
+  .collection{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:22px;}
+  .pick{background:#faf3de; border:1px solid var(--line); box-shadow:var(--paper-shadow); padding:24px;}
+  .pick .eyebrow{margin-bottom:10px;}
+  .pick p{margin:0; font-size:18px; font-style:italic;}
+  .pick .note-by{display:block; margin-top:12px; font-family:'Caveat', cursive; font-size:19px; color:var(--evergreen);}
+  .pick a.from-link{
+    display:inline-block; margin-top:14px; font-family:'Special Elite', monospace; font-size:10px;
+    letter-spacing:0.06em; text-transform:uppercase; color:var(--brass); text-decoration:none; border-bottom:1px solid var(--brass);
+  }
+  footer{background:var(--evergreen-deep); color:var(--buttermilk); text-align:center; padding:44px 24px; margin-top:20px;}
+  footer .wordmark2{font-family:'IM Fell English', serif; font-style:italic; font-size:22px; display:block; margin-bottom:8px;}
+  footer .root-reason{font-family:'Special Elite', monospace; font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:var(--brass-light);}
+</style>
+</head>
+<body>
+
+<header>
+  <span class="wordmark">r&amp;r</span>
+  <div class="nav-links">
+    <a class="nav-link" href="index.html">the cabinet</a>
+    <a class="nav-link" href="rr-about.html">about</a>
+  </div>
+</header>
+
+<section class="hero">
+  <span class="eyebrow">today's collection</span>
+  <h1>curated by r&amp;r</h1>
+  <p class="curator-note">a small shelf of what stayed with me this week.</p>
+</section>
+
+<main>
+  <div class="collection">
+    <div class="pick">
+      <span class="eyebrow">from letters</span>
+      <p>"you have more time than you think, and less to prove than you believe."</p>
+      <span class="note-by">— to my younger self</span>
+      <a class="from-link" href="rr-letters.html">read in letters →</a>
+    </div>
+    <div class="pick">
+      <span class="eyebrow">from where are you?</span>
+      <p>"it looks like the city is blushing."</p>
+      <span class="note-by">— Buenos Aires</span>
+      <a class="from-link" href="rr-where.html">read in where are you? →</a>
+    </div>
+    <div class="pick">
+      <span class="eyebrow">from ask the world</span>
+      <p>"i make tea i don't even want, just for the ritual of waiting."</p>
+      <span class="note-by">— Reykjavík</span>
+      <a class="from-link" href="rr-ask.html">read in ask the world →</a>
+    </div>
+    <div class="pick">
+      <span class="eyebrow">from today's thought</span>
+      <p>"being a beginner again, at thirty-four, changed everything about how i see failure."</p>
+      <span class="note-by">— Tom, Bristol</span>
+      <a class="from-link" href="rr-today.html">read in today's thought →</a>
+    </div>
+    <div class="pick">
+      <span class="eyebrow">from share a thought</span>
+      <p>"some days i miss a version of myself i never actually met."</p>
+      <span class="note-by">— anonymous, Toronto</span>
+      <a class="from-link" href="rr-share.html">read in share a thought →</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <span class="wordmark2">r&amp;r</span>
+  <div class="root-reason">root &amp; reason</div>
+</footer>
+
+</body>
+</html>

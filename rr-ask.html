@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>r&amp;r — ask the world</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Caveat:wght@500;600&family=Special+Elite&display=swap');
+  :root{
+    --buttermilk:#f4ecd5; --beige:#e7d9ae; --evergreen:#1e3a2c; --evergreen-deep:#132922;
+    --ink:#2a2a1e; --brass:#9c7a3e; --brass-light:#c9a968;
+    --line: rgba(30,58,44,0.18); --paper-shadow: 0 1px 0 rgba(30,58,44,0.06), 0 10px 24px -14px rgba(20,30,20,0.3);
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--buttermilk); color:var(--ink); font-family:'Cormorant Garamond', serif; font-size:19px; line-height:1.65;}
+  body::before{content:""; position:fixed; inset:0; pointer-events:none; z-index:2; opacity:0.5; mix-blend-mode:multiply;
+    background-image:radial-gradient(rgba(30,58,44,0.035) 1px, transparent 1px); background-size:3px 3px;}
+  a{color:inherit;}
+  .eyebrow{font-family:'Special Elite', monospace; font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:var(--brass);}
+  header{background:var(--evergreen); color:var(--buttermilk); padding:22px clamp(20px,5vw,48px); display:flex; align-items:center; justify-content:space-between;}
+  header .wordmark{font-family:'IM Fell English', serif; font-style:italic; font-size:20px;}
+  .nav-links{display:flex; gap:20px;}
+  header a.nav-link{font-family:'Special Elite', monospace; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; text-decoration:none; color:var(--brass-light); border-bottom:1px solid var(--brass-light); padding-bottom:2px;}
+  .hero{text-align:center; padding:72px 24px 56px; background:radial-gradient(120% 100% at 50% 0%, var(--evergreen) 0%, var(--evergreen-deep) 75%); color:var(--buttermilk);}
+  .hero .eyebrow{color:var(--brass-light); display:block; margin-bottom:14px;}
+  .hero h1{font-family:'IM Fell English', serif; font-style:italic; font-weight:400; font-size:clamp(28px,4.5vw,38px); margin:0 0 16px;}
+  .hero p{max-width:46ch; margin:0 auto; color:rgba(244,236,213,0.8); font-size:16.5px;}
+  main{max-width:680px; margin:0 auto; padding:56px 24px 100px;}
+  .question-card{background:var(--evergreen); color:var(--buttermilk); padding:26px 28px; margin-bottom:32px;}
+  .question-card .eyebrow{color:var(--brass-light);}
+  .question-card p{font-family:'IM Fell English', serif; font-style:italic; font-size:24px; margin:10px 0 0;}
+  .cta-row{text-align:center; margin-bottom:44px;}
+  .cta{display:inline-block; font-family:'Special Elite', monospace; font-size:12px; letter-spacing:0.1em; text-transform:uppercase; text-decoration:none; color:var(--buttermilk); background:var(--evergreen); padding:12px 24px;}
+  .cta:hover{background:var(--evergreen-deep);}
+  .answers{display:flex; flex-direction:column; gap:16px; margin-left:clamp(0px,4vw,32px);}
+  .answer{border-left:2px solid var(--brass-light); padding:6px 0 6px 18px;}
+  .answer p{margin:0 0 6px; font-size:17px;}
+  .answer .note-by{font-family:'Caveat', cursive; font-size:18px; color:var(--evergreen);}
+  .empty-note{text-align:center; color:rgba(42,42,30,0.5); font-style:italic; font-size:16px; padding:20px 0;}
+  footer{background:var(--evergreen-deep); color:var(--buttermilk); text-align:center; padding:44px 24px;}
+  footer .wordmark2{font-family:'IM Fell English', serif; font-style:italic; font-size:22px; display:block; margin-bottom:8px;}
+  footer .root-reason{font-family:'Special Elite', monospace; font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:var(--brass-light);}
+</style>
+</head>
+<body>
+
+<header>
+  <span class="wordmark">r&amp;r</span>
+  <div class="nav-links">
+    <a class="nav-link" href="index.html">the cabinet</a>
+    <a class="nav-link" href="rr-about.html">about</a>
+    <a class="nav-link" href="rr-submit.html?type=answer">answer gently</a>
+  </div>
+</header>
+
+<section class="hero">
+  <span class="eyebrow">ask the world</span>
+  <h1>a softer kind of forum</h1>
+  <p>someone asks, strangers answer gently. no upvotes, no arguments — just people trying to help.</p>
+</section>
+
+<main>
+  <div class="question-card">
+    <span class="eyebrow">asked by someone in Warsaw</span>
+    <p>"how do you find calm on the hard days?"</p>
+  </div>
+
+  <div class="cta-row">
+    <a class="cta" href="rr-submit.html?type=answer">answer this</a>
+  </div>
+
+  <div class="answers" id="answersList">
+    <p class="empty-note">opening the jar...</p>
+  </div>
+</main>
+
+<footer>
+  <span class="wordmark2">r&amp;r</span>
+  <div class="root-reason">root &amp; reason</div>
+</footer>
+
+<script>
+  const founding = [
+    { by: 'Elin, Reykjavík', text: "i make tea i don't even want, just for the ritual of waiting for it to steep." },
+    { by: 'Rahul, Mumbai', text: "i go outside and name five things i can see. it sounds too simple to work. it works." },
+    { by: 'Sofia, Milan', text: "i remind myself that this feeling, too, is temporary — it just doesn't feel that way at 2am." }
+  ];
+  function escapeHtml(str){ const d = document.createElement('div'); d.textContent = str; return d.innerHTML; }
+  document.getElementById('answersList').innerHTML = founding.map(n => `
+    <div class="answer"><p>${escapeHtml(n.text)}</p><span class="note-by">— ${escapeHtml(n.by)}</span></div>
+  `).join('');
+</script>
+
+</body>
+</html>
