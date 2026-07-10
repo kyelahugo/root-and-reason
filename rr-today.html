@@ -70,16 +70,41 @@
   <div class="root-reason">root &amp; reason</div>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="rr-config.js"></script>
 <script>
+  const sb = window.supabase.createClient(window.RR_CONFIG.url, window.RR_CONFIG.key);
+
   const founding = [
-    { by: 'Kmh, London', text: "the past." },
-    { by: Jos A, Dr Wine', text: "There’s this friend of mine who nearly died after going Shisha with me. Literally risked her life for vibes. #respect." },
+    { by: 'Amara, Lagos', text: "a stranger on a train once told me my idea wasn't crazy. i was twenty-two and about to give up on it. i still think about that ten-minute conversation more than most years of my life." },
+    { by: 'Noor, Beirut', text: "my grandmother's hands. watching her fold dough the same way for sixty years taught me that repetition isn't boring — it's how you get good at loving something." },
     { by: 'Tom, Bristol', text: "i quit a job i was praised for, to do one i was bad at. being a beginner again, at thirty-four, changed everything about how i see failure." }
   ];
   function escapeHtml(str){ const d = document.createElement('div'); d.textContent = str; return d.innerHTML; }
-  document.getElementById('notesList').innerHTML = founding.map(n => `
-    <div class="note"><p>${escapeHtml(n.text)}</p><span class="note-by">— ${escapeHtml(n.by)}</span></div>
-  `).join('');
+
+  async function loadApproved(){
+    try{
+      const { data, error } = await sb
+        .from('entries')
+        .select('*')
+        .eq('type', 'today')
+        .eq('approved', true)
+        .order('created_at', { ascending: false });
+      if(error || !data) return [];
+      return data.map(e => ({ by: `${e.name || 'anonymous'}${e.place ? ', ' + e.place : ''}`, text: e.content }));
+    }catch(err){
+      return [];
+    }
+  }
+
+  async function init(){
+    const submitted = await loadApproved();
+    const all = [...submitted, ...founding];
+    document.getElementById('notesList').innerHTML = all.map(n => `
+      <div class="note"><p>${escapeHtml(n.text)}</p><span class="note-by">— ${escapeHtml(n.by)}</span></div>
+    `).join('');
+  }
+  init();
 </script>
 
 </body>

@@ -161,11 +161,7 @@
 
   <p class="prompt-line" id="promptLine">no prompt — just whatever's sitting with you today.</p>
 
-  <form id="entryForm" name="entries" method="POST" data-netlify="true" netlify-honeypot="bot-field">
-    <input type="hidden" name="form-name" value="entries">
-    <input type="hidden" name="type" id="typeField" value="thought">
-    <p style="display:none;"><label>Don't fill this out if you're human: <input name="bot-field" /></label></p>
-
+  <form id="entryForm">
     <div class="row">
       <label for="content" id="contentLabel">your words</label>
       <textarea id="content" name="content" required placeholder="start writing..."></textarea>
@@ -194,7 +190,12 @@
   <p class="empty-note">every submission is read by hand before it's added to the shelf — nothing appears automatically. check back on the page you came from in a few days.</p>
 </main>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="rr-config.js"></script>
+
 <script>
+  const sb = window.supabase.createClient(window.RR_CONFIG.url, window.RR_CONFIG.key);
+
   let currentType = 'thought';
 
   const typeLabels = {
@@ -215,14 +216,12 @@
   const typeRow = document.getElementById('typeRow');
   const promptLine = document.getElementById('promptLine');
   const contentLabel = document.getElementById('contentLabel');
-  const typeField = document.getElementById('typeField');
   const form = document.getElementById('entryForm');
   const statusEl = document.getElementById('status');
   const submitBtn = document.getElementById('submitBtn');
 
   function setType(type){
     currentType = type;
-    typeField.value = type;
     promptLine.textContent = typePrompts[type];
     contentLabel.textContent = typeLabels[type];
     document.querySelectorAll('.type-pill').forEach(p => {
@@ -247,19 +246,20 @@
     e.preventDefault();
     const content = document.getElementById('content').value.trim();
     if(!content) return;
+    const name = document.getElementById('name').value.trim();
+    const place = document.getElementById('place').value.trim();
 
     submitBtn.disabled = true;
     statusEl.textContent = 'leaving it on the shelf...';
 
     try{
-      const formData = new FormData(form);
-      const body = new URLSearchParams(formData).toString();
-      const res = await fetch('/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body
+      const { error } = await sb.from('entries').insert({
+        type: currentType,
+        name: name || null,
+        place: place || null,
+        content
       });
-      if(!res.ok) throw new Error('submit failed');
+      if(error) throw error;
       form.reset();
       setType(currentType);
       statusEl.textContent = 'left it here. thank you.';

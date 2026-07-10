@@ -70,16 +70,41 @@
   <div class="root-reason">root &amp; reason</div>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="rr-config.js"></script>
 <script>
+  const sb = window.supabase.createClient(window.RR_CONFIG.url, window.RR_CONFIG.key);
+
   const founding = [
     { place: 'Osaka, Japan', text: "it's raining today. everyone under the same grey sky, somehow, and it makes the world feel connected." },
     { place: 'Nairobi, Kenya', text: "the dust has finally settled after last night's rain. the air smells like it's been washed clean." },
     { place: 'Buenos Aires, Argentina', text: "the jacaranda trees are shedding purple onto the sidewalks. it looks like the city is blushing." }
   ];
   function escapeHtml(str){ const d = document.createElement('div'); d.textContent = str; return d.innerHTML; }
-  document.getElementById('postcardsList').innerHTML = founding.map(n => `
-    <div class="postcard"><span class="place">${escapeHtml(n.place)}</span><p>${escapeHtml(n.text)}</p></div>
-  `).join('');
+
+  async function loadApproved(){
+    try{
+      const { data, error } = await sb
+        .from('entries')
+        .select('*')
+        .eq('type', 'postcard')
+        .eq('approved', true)
+        .order('created_at', { ascending: false });
+      if(error || !data) return [];
+      return data.map(e => ({ place: e.place || (e.name || 'somewhere'), text: e.content }));
+    }catch(err){
+      return [];
+    }
+  }
+
+  async function init(){
+    const submitted = await loadApproved();
+    const all = [...submitted, ...founding];
+    document.getElementById('postcardsList').innerHTML = all.map(n => `
+      <div class="postcard"><span class="place">${escapeHtml(n.place)}</span><p>${escapeHtml(n.text)}</p></div>
+    `).join('');
+  }
+  init();
 </script>
 
 </body>

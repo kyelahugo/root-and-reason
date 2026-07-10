@@ -145,7 +145,11 @@
   <div class="root-reason">root &amp; reason</div>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="rr-config.js"></script>
 <script>
+  const sb = window.supabase.createClient(window.RR_CONFIG.url, window.RR_CONFIG.key);
+
   const foundingLetters = [
     {
       salut: 'to whoever needs this today,',
@@ -169,18 +173,53 @@
     return div.innerHTML;
   }
 
-  function render(){
+  function firstLine(text){
+    const trimmed = text.trim();
+    const nl = trimmed.indexOf('\n');
+    if(nl > -1 && nl < 80) return { salut: trimmed.slice(0, nl), rest: trimmed.slice(nl+1) };
+    return { salut: 'to whoever finds this,', rest: trimmed };
+  }
+
+  async function loadApprovedLetters(){
+    try{
+      const { data, error } = await sb
+        .from('entries')
+        .select('*')
+        .eq('type', 'letter')
+        .eq('approved', true)
+        .order('created_at', { ascending: false });
+      if(error || !data) return [];
+      return data.map(e => {
+        const parts = firstLine(e.content);
+        return {
+          salut: parts.salut,
+          body: parts.rest,
+          sign: `— ${e.name || 'anonymous'}${e.place ? ', ' + e.place : ''}`,
+          founding: false
+        };
+      });
+    }catch(err){
+      return [];
+    }
+  }
+
+  function render(list){
     const container = document.getElementById('lettersList');
-    container.innerHTML = foundingLetters.map(l => `
+    container.innerHTML = list.map(l => `
       <div class="letter">
-        <span class="founding">founding letter</span>
+        ${l.founding ? '<span class="founding">founding letter</span>' : ''}
         <span class="salut">${escapeHtml(l.salut)}</span>
         <p class="body-text">${escapeHtml(l.body)}</p>
-        <span class="sign">${l.sign}</span>
+        <span class="sign">${l.founding ? l.sign : escapeHtml(l.sign)}</span>
       </div>
     `).join('');
   }
-  render();
+
+  async function init(){
+    const submitted = await loadApprovedLetters();
+    render([...submitted, ...foundingLetters]);
+  }
+  init();
 </script>
 
 </body>

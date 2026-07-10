@@ -79,16 +79,41 @@
   <div class="root-reason">root &amp; reason</div>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="rr-config.js"></script>
 <script>
+  const sb = window.supabase.createClient(window.RR_CONFIG.url, window.RR_CONFIG.key);
+
   const founding = [
     { by: 'Elin, Reykjavík', text: "i make tea i don't even want, just for the ritual of waiting for it to steep." },
     { by: 'Rahul, Mumbai', text: "i go outside and name five things i can see. it sounds too simple to work. it works." },
     { by: 'Sofia, Milan', text: "i remind myself that this feeling, too, is temporary — it just doesn't feel that way at 2am." }
   ];
   function escapeHtml(str){ const d = document.createElement('div'); d.textContent = str; return d.innerHTML; }
-  document.getElementById('answersList').innerHTML = founding.map(n => `
-    <div class="answer"><p>${escapeHtml(n.text)}</p><span class="note-by">— ${escapeHtml(n.by)}</span></div>
-  `).join('');
+
+  async function loadApproved(){
+    try{
+      const { data, error } = await sb
+        .from('entries')
+        .select('*')
+        .eq('type', 'answer')
+        .eq('approved', true)
+        .order('created_at', { ascending: false });
+      if(error || !data) return [];
+      return data.map(e => ({ by: `${e.name || 'anonymous'}${e.place ? ', ' + e.place : ''}`, text: e.content }));
+    }catch(err){
+      return [];
+    }
+  }
+
+  async function init(){
+    const submitted = await loadApproved();
+    const all = [...submitted, ...founding];
+    document.getElementById('answersList').innerHTML = all.map(n => `
+      <div class="answer"><p>${escapeHtml(n.text)}</p><span class="note-by">— ${escapeHtml(n.by)}</span></div>
+    `).join('');
+  }
+  init();
 </script>
 
 </body>
