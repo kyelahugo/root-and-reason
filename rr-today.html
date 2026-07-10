@@ -24,7 +24,7 @@
   .hero{text-align:center; padding:72px 24px 56px; background:radial-gradient(120% 100% at 50% 0%, var(--evergreen) 0%, var(--evergreen-deep) 75%); color:var(--buttermilk);}
   .hero .eyebrow{color:var(--brass-light); display:block; margin-bottom:14px;}
   .hero h1{font-family:'IM Fell English', serif; font-style:italic; font-weight:400; font-size:clamp(28px,4.5vw,38px); margin:0 0 16px;}
-  .hero p.prompt{font-family:'Cormorant Garamond', serif; font-style:italic; font-size:24px; color:var(--brass-light); margin:0;}
+  .hero p.prompt{font-family:'Cormorant Garamond', serif; font-style:italic; font-size:24px; color:var(--brass-light); margin:0; min-height:34px;}
   main{max-width:680px; margin:0 auto; padding:56px 24px 100px;}
   .cta-row{text-align:center; margin-bottom:48px;}
   .cta{display:inline-block; font-family:'Special Elite', monospace; font-size:12px; letter-spacing:0.1em; text-transform:uppercase; text-decoration:none; color:var(--buttermilk); background:var(--evergreen); padding:12px 24px;}
@@ -34,6 +34,21 @@
   .note p{margin:0 0 10px; font-size:18px;}
   .note-by{font-family:'Caveat', cursive; font-size:20px; color:var(--evergreen);}
   .empty-note{text-align:center; color:rgba(42,42,30,0.5); font-style:italic; font-size:16px; padding:20px 0;}
+
+  .archive{margin-top:64px; padding-top:44px; border-top:1px dashed var(--line);}
+  .archive-head{text-align:center; margin-bottom:28px;}
+  .archive-head h2{font-family:'IM Fell English', serif; font-style:italic; font-weight:400; font-size:22px; color:var(--evergreen); margin:8px 0 0;}
+  details.past-q{background:#faf3de; border:1px solid var(--line); box-shadow:var(--paper-shadow); margin-bottom:16px; padding:18px 22px;}
+  details.past-q summary{
+    cursor:pointer; font-family:'Cormorant Garamond', serif; font-style:italic; font-size:19px; color:var(--evergreen);
+    list-style:none; display:flex; align-items:center; justify-content:space-between; gap:10px;
+  }
+  details.past-q summary::-webkit-details-marker{display:none;}
+  details.past-q summary::after{content:"+"; font-family:'Special Elite', monospace; color:var(--brass); flex-shrink:0;}
+  details.past-q[open] summary::after{content:"–";}
+  details.past-q .notes{margin-top:18px;}
+  details.past-q .note{background:var(--buttermilk); box-shadow:none; padding:16px 18px;}
+
   footer{background:var(--evergreen-deep); color:var(--buttermilk); text-align:center; padding:44px 24px;}
   footer .wordmark2{font-family:'IM Fell English', serif; font-style:italic; font-size:22px; display:block; margin-bottom:8px;}
   footer .root-reason{font-family:'Special Elite', monospace; font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:var(--brass-light);}
@@ -53,7 +68,7 @@
 <section class="hero">
   <span class="eyebrow">today's thought</span>
   <h1>a question, left open</h1>
-  <p class="prompt">"what changed your life?"</p>
+  <p class="prompt" id="currentQuestionText">loading today's question...</p>
 </section>
 
 <main>
@@ -62,6 +77,14 @@
   </div>
   <div class="notes" id="notesList">
     <p class="empty-note">opening the jar...</p>
+  </div>
+
+  <div class="archive" id="archiveSection" style="display:none;">
+    <div class="archive-head">
+      <span class="eyebrow">the archive</span>
+      <h2>earlier questions, kept as they were</h2>
+    </div>
+    <div id="archiveList"></div>
   </div>
 </main>
 
@@ -74,35 +97,73 @@
 <script src="rr-config.js"></script>
 <script>
   const sb = window.supabase.createClient(window.RR_CONFIG.url, window.RR_CONFIG.key);
+  const SEED_QUESTION = "what changed your life?";
 
-  const founding = [
+  const foundingAnswers = [
     { by: 'Amara, Lagos', text: "a stranger on a train once told me my idea wasn't crazy. i was twenty-two and about to give up on it. i still think about that ten-minute conversation more than most years of my life." },
     { by: 'Noor, Beirut', text: "my grandmother's hands. watching her fold dough the same way for sixty years taught me that repetition isn't boring — it's how you get good at loving something." },
     { by: 'Tom, Bristol', text: "i quit a job i was praised for, to do one i was bad at. being a beginner again, at thirty-four, changed everything about how i see failure." }
   ];
+
   function escapeHtml(str){ const d = document.createElement('div'); d.textContent = str; return d.innerHTML; }
 
-  async function loadApproved(){
-    try{
-      const { data, error } = await sb
-        .from('entries')
-        .select('*')
-        .eq('type', 'today')
-        .eq('approved', true)
-        .order('created_at', { ascending: false });
-      if(error || !data) return [];
-      return data.map(e => ({ by: `${e.name || 'anonymous'}${e.place ? ', ' + e.place : ''}`, text: e.content }));
-    }catch(err){
-      return [];
-    }
+  function renderNotes(list){
+    if(!list.length) return '<p class="empty-note">no answers here yet.</p>';
+    return `<div class="notes">${list.map(n => `
+      <div class="note"><p>${escapeHtml(n.text)}</p><span class="note-by">— ${escapeHtml(n.by)}</span></div>
+    `).join('')}</div>`;
   }
 
   async function init(){
-    const submitted = await loadApproved();
-    const all = [...submitted, ...founding];
-    document.getElementById('notesList').innerHTML = all.map(n => `
-      <div class="note"><p>${escapeHtml(n.text)}</p><span class="note-by">— ${escapeHtml(n.by)}</span></div>
+    let questions = [];
+    let entries = [];
+    try{
+      const qRes = await sb.from('questions').select('*').eq('context','today').eq('approved', true).order('created_at', { ascending: false });
+      questions = qRes.data || [];
+    }catch(err){ questions = []; }
+    try{
+      const eRes = await sb.from('entries').select('*').eq('type','today').eq('approved', true).order('created_at', { ascending: false });
+      entries = eRes.data || [];
+    }catch(err){ entries = []; }
+
+    const answersFor = (questionId) => entries
+      .filter(e => e.question_id === questionId)
+      .map(e => ({ by: `${e.name || 'anonymous'}${e.place ? ', ' + e.place : ''}`, text: e.content }));
+
+    const current = questions[0];
+    const currentText = current ? current.text : SEED_QUESTION;
+    document.getElementById('currentQuestionText').textContent = `"${currentText}"`;
+
+    let currentAnswers = current ? answersFor(current.id) : [];
+    // keep the founding examples attached to the shelf as long as the live question hasn't changed
+    if(currentText.trim().toLowerCase() === SEED_QUESTION){
+      currentAnswers = [...currentAnswers, ...foundingAnswers];
+    }
+    document.getElementById('notesList').innerHTML = renderNotes(currentAnswers);
+
+    // archive: every older question, plus a fallback slot for the founding examples
+    // if the live question has already moved on from the original one
+    const pastQuestions = questions.slice(1);
+    let archiveHtml = pastQuestions.map(q => `
+      <details class="past-q">
+        <summary>"${escapeHtml(q.text)}"</summary>
+        ${renderNotes(answersFor(q.id))}
+      </details>
     `).join('');
+
+    if(currentText.trim().toLowerCase() !== SEED_QUESTION){
+      archiveHtml += `
+        <details class="past-q">
+          <summary>"${escapeHtml(SEED_QUESTION)}"</summary>
+          ${renderNotes(foundingAnswers)}
+        </details>
+      `;
+    }
+
+    if(archiveHtml){
+      document.getElementById('archiveSection').style.display = 'block';
+      document.getElementById('archiveList').innerHTML = archiveHtml;
+    }
   }
   init();
 </script>

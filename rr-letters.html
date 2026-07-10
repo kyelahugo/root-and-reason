@@ -107,6 +107,10 @@
 
   .empty-note{text-align:center; color:rgba(42,42,30,0.5); font-style:italic; font-size:17px; padding:40px 0;}
 
+  .cta-row{text-align:center; margin-bottom:44px;}
+  .cta{display:inline-block; font-family:'Special Elite', monospace; font-size:12px; letter-spacing:0.1em; text-transform:uppercase; text-decoration:none; color:var(--buttermilk); background:var(--evergreen); padding:12px 24px;}
+  .cta:hover{background:var(--evergreen-deep);}
+
   footer{
     background:var(--evergreen-deep); color:var(--buttermilk);
     text-align:center; padding:44px 24px;
@@ -135,6 +139,9 @@
 </section>
 
 <main>
+  <div class="cta-row">
+    <a class="cta" href="rr-submit.html?type=letter">write a letter</a>
+  </div>
   <div class="letters" id="lettersList">
     <p class="empty-note">opening the drawer...</p>
   </div>

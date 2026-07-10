@@ -28,7 +28,7 @@
   main{max-width:680px; margin:0 auto; padding:56px 24px 100px;}
   .question-card{background:var(--evergreen); color:var(--buttermilk); padding:26px 28px; margin-bottom:32px;}
   .question-card .eyebrow{color:var(--brass-light);}
-  .question-card p{font-family:'IM Fell English', serif; font-style:italic; font-size:24px; margin:10px 0 0;}
+  .question-card p{font-family:'IM Fell English', serif; font-style:italic; font-size:24px; margin:10px 0 0; min-height:30px;}
   .cta-row{text-align:center; margin-bottom:44px;}
   .cta{display:inline-block; font-family:'Special Elite', monospace; font-size:12px; letter-spacing:0.1em; text-transform:uppercase; text-decoration:none; color:var(--buttermilk); background:var(--evergreen); padding:12px 24px;}
   .cta:hover{background:var(--evergreen-deep);}
@@ -37,6 +37,43 @@
   .answer p{margin:0 0 6px; font-size:17px;}
   .answer .note-by{font-family:'Caveat', cursive; font-size:18px; color:var(--evergreen);}
   .empty-note{text-align:center; color:rgba(42,42,30,0.5); font-style:italic; font-size:16px; padding:20px 0;}
+
+  .archive{margin-top:64px; padding-top:44px; border-top:1px dashed var(--line);}
+  .archive-head{text-align:center; margin-bottom:28px;}
+  .archive-head h2{font-family:'IM Fell English', serif; font-style:italic; font-weight:400; font-size:22px; color:var(--evergreen); margin:8px 0 0;}
+  details.past-q{background:#faf3de; border:1px solid var(--line); box-shadow:var(--paper-shadow); margin-bottom:16px; padding:18px 22px;}
+  details.past-q summary{
+    cursor:pointer; font-family:'Cormorant Garamond', serif; font-style:italic; font-size:19px; color:var(--evergreen);
+    list-style:none; display:flex; align-items:center; justify-content:space-between; gap:10px;
+  }
+  details.past-q summary::-webkit-details-marker{display:none;}
+  details.past-q summary::after{content:"+"; font-family:'Special Elite', monospace; color:var(--brass); flex-shrink:0;}
+  details.past-q[open] summary::after{content:"–";}
+  details.past-q .answers{margin-top:18px; margin-left:0;}
+
+  .suggest-box{
+    margin-top:64px; padding-top:44px; border-top:1px dashed var(--line); text-align:center;
+  }
+  .suggest-box h2{font-family:'IM Fell English', serif; font-style:italic; font-weight:400; font-size:20px; color:var(--evergreen); margin:8px 0 20px;}
+  .suggest-form{
+    background:#faf3de; border:1px solid var(--line); box-shadow:var(--paper-shadow);
+    padding:24px; text-align:left; max-width:520px; margin:0 auto;
+  }
+  .suggest-form textarea{
+    width:100%; min-height:70px; border:1px dashed var(--line); background:transparent;
+    font-family:'Cormorant Garamond', serif; font-style:italic; font-size:17px; color:var(--ink);
+    padding:12px; outline:none; resize:vertical;
+  }
+  .suggest-form textarea:focus{border-color:var(--brass);}
+  .suggest-foot{display:flex; justify-content:space-between; align-items:center; margin-top:14px; flex-wrap:wrap; gap:10px;}
+  .suggest-note{font-family:'Special Elite', monospace; font-size:10px; color:rgba(42,42,30,0.5);}
+  .suggest-btn{
+    font-family:'Special Elite', monospace; font-size:11px; letter-spacing:0.1em; text-transform:uppercase;
+    background:var(--evergreen); color:var(--buttermilk); border:none; padding:10px 18px; cursor:pointer;
+  }
+  .suggest-btn:hover{background:var(--evergreen-deep);}
+  .suggest-status{font-family:'Caveat', cursive; font-size:19px; color:var(--evergreen); text-align:center; margin-top:14px; min-height:24px;}
+
   footer{background:var(--evergreen-deep); color:var(--buttermilk); text-align:center; padding:44px 24px;}
   footer .wordmark2{font-family:'IM Fell English', serif; font-style:italic; font-size:22px; display:block; margin-bottom:8px;}
   footer .root-reason{font-family:'Special Elite', monospace; font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:var(--brass-light);}
@@ -61,8 +98,8 @@
 
 <main>
   <div class="question-card">
-    <span class="eyebrow">asked by someone in Warsaw</span>
-    <p>"how do you find calm on the hard days?"</p>
+    <span class="eyebrow">the current question</span>
+    <p id="currentQuestionText">loading...</p>
   </div>
 
   <div class="cta-row">
@@ -71,6 +108,27 @@
 
   <div class="answers" id="answersList">
     <p class="empty-note">opening the jar...</p>
+  </div>
+
+  <div class="archive" id="archiveSection" style="display:none;">
+    <div class="archive-head">
+      <span class="eyebrow">the archive</span>
+      <h2>earlier questions, kept as they were</h2>
+    </div>
+    <div id="archiveList"></div>
+  </div>
+
+  <div class="suggest-box">
+    <span class="eyebrow">have a question?</span>
+    <h2>suggest what the world gets asked next</h2>
+    <div class="suggest-form">
+      <textarea id="suggestInput" placeholder="what would you want strangers to answer?"></textarea>
+      <div class="suggest-foot">
+        <span class="suggest-note">read by the curator before it's ever asked</span>
+        <button class="suggest-btn" id="suggestBtn">suggest it</button>
+      </div>
+    </div>
+    <p class="suggest-status" id="suggestStatus"></p>
   </div>
 </main>
 
@@ -83,37 +141,88 @@
 <script src="rr-config.js"></script>
 <script>
   const sb = window.supabase.createClient(window.RR_CONFIG.url, window.RR_CONFIG.key);
+  const SEED_QUESTION = "how do you find calm on hard days?";
 
-  const founding = [
+  const foundingAnswers = [
     { by: 'Elin, Reykjavík', text: "i make tea i don't even want, just for the ritual of waiting for it to steep." },
     { by: 'Rahul, Mumbai', text: "i go outside and name five things i can see. it sounds too simple to work. it works." },
     { by: 'Sofia, Milan', text: "i remind myself that this feeling, too, is temporary — it just doesn't feel that way at 2am." }
   ];
+
   function escapeHtml(str){ const d = document.createElement('div'); d.textContent = str; return d.innerHTML; }
 
-  async function loadApproved(){
-    try{
-      const { data, error } = await sb
-        .from('entries')
-        .select('*')
-        .eq('type', 'answer')
-        .eq('approved', true)
-        .order('created_at', { ascending: false });
-      if(error || !data) return [];
-      return data.map(e => ({ by: `${e.name || 'anonymous'}${e.place ? ', ' + e.place : ''}`, text: e.content }));
-    }catch(err){
-      return [];
-    }
+  function renderAnswers(list){
+    if(!list.length) return '<p class="empty-note">no answers here yet.</p>';
+    return `<div class="answers">${list.map(n => `
+      <div class="answer"><p>${escapeHtml(n.text)}</p><span class="note-by">— ${escapeHtml(n.by)}</span></div>
+    `).join('')}</div>`;
   }
 
   async function init(){
-    const submitted = await loadApproved();
-    const all = [...submitted, ...founding];
-    document.getElementById('answersList').innerHTML = all.map(n => `
-      <div class="answer"><p>${escapeHtml(n.text)}</p><span class="note-by">— ${escapeHtml(n.by)}</span></div>
+    let questions = [];
+    let entries = [];
+    try{
+      const qRes = await sb.from('questions').select('*').eq('context','ask').eq('approved', true).order('created_at', { ascending: false });
+      questions = qRes.data || [];
+    }catch(err){ questions = []; }
+    try{
+      const eRes = await sb.from('entries').select('*').eq('type','answer').eq('approved', true).order('created_at', { ascending: false });
+      entries = eRes.data || [];
+    }catch(err){ entries = []; }
+
+    const answersFor = (questionId) => entries
+      .filter(e => e.question_id === questionId)
+      .map(e => ({ by: `${e.name || 'anonymous'}${e.place ? ', ' + e.place : ''}`, text: e.content }));
+
+    const current = questions[0];
+    const currentText = current ? current.text : SEED_QUESTION;
+    document.getElementById('currentQuestionText').textContent = `"${currentText}"`;
+
+    let currentAnswers = current ? answersFor(current.id) : [];
+    if(currentText.trim().toLowerCase() === SEED_QUESTION){
+      currentAnswers = [...currentAnswers, ...foundingAnswers];
+    }
+    document.getElementById('answersList').innerHTML = renderAnswers(currentAnswers);
+
+    const pastQuestions = questions.slice(1);
+    let archiveHtml = pastQuestions.map(q => `
+      <details class="past-q">
+        <summary>"${escapeHtml(q.text)}"</summary>
+        ${renderAnswers(answersFor(q.id))}
+      </details>
     `).join('');
+
+    if(currentText.trim().toLowerCase() !== SEED_QUESTION){
+      archiveHtml += `
+        <details class="past-q">
+          <summary>"${escapeHtml(SEED_QUESTION)}"</summary>
+          ${renderAnswers(foundingAnswers)}
+        </details>
+      `;
+    }
+
+    if(archiveHtml){
+      document.getElementById('archiveSection').style.display = 'block';
+      document.getElementById('archiveList').innerHTML = archiveHtml;
+    }
   }
   init();
+
+  document.getElementById('suggestBtn').addEventListener('click', async () => {
+    const input = document.getElementById('suggestInput');
+    const status = document.getElementById('suggestStatus');
+    const text = input.value.trim();
+    if(!text) return;
+    try{
+      const { error } = await sb.from('questions').insert({ context: 'ask', text, approved: false });
+      if(error) throw error;
+      input.value = '';
+      status.textContent = 'suggested. thank you.';
+    }catch(err){
+      status.textContent = 'something went wrong — please try again.';
+    }
+    setTimeout(() => { status.textContent = ''; }, 4000);
+  });
 </script>
 
 </body>

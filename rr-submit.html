@@ -242,6 +242,17 @@
   }
   applyPresetType();
 
+  const typeToContext = { today: 'today', answer: 'ask' };
+
+  async function getCurrentQuestionId(context){
+    try{
+      const { data } = await sb.from('questions').select('id').eq('context', context).eq('approved', true).order('created_at', { ascending: false }).limit(1);
+      return data && data[0] ? data[0].id : null;
+    }catch(err){
+      return null;
+    }
+  }
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const content = document.getElementById('content').value.trim();
@@ -253,11 +264,16 @@
     statusEl.textContent = 'leaving it on the shelf...';
 
     try{
+      let question_id = null;
+      const context = typeToContext[currentType];
+      if(context) question_id = await getCurrentQuestionId(context);
+
       const { error } = await sb.from('entries').insert({
         type: currentType,
         name: name || null,
         place: place || null,
-        content
+        content,
+        question_id
       });
       if(error) throw error;
       form.reset();
