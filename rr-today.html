@@ -130,11 +130,15 @@
       .filter(e => e.question_id === questionId)
       .map(e => ({ by: `${e.name || 'anonymous'}${e.place ? ', ' + e.place : ''}`, text: e.content }));
 
+    const legacyAnswers = entries
+      .filter(e => !e.question_id)
+      .map(e => ({ by: `${e.name || 'anonymous'}${e.place ? ', ' + e.place : ''}`, text: e.content }));
+
     const current = questions[0];
     const currentText = current ? current.text : SEED_QUESTION;
     document.getElementById('currentQuestionText').textContent = `"${currentText}"`;
 
-    let currentAnswers = current ? answersFor(current.id) : [];
+    let currentAnswers = current ? [...answersFor(current.id), ...legacyAnswers] : legacyAnswers;
     // keep the founding examples attached to the shelf as long as the live question hasn't changed
     if(currentText.trim().toLowerCase() === SEED_QUESTION){
       currentAnswers = [...currentAnswers, ...foundingAnswers];
