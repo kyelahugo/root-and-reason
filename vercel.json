@@ -1,0 +1,13 @@
+{
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/about", "destination": "/rr-about.html" },
+    { "source": "/todaysthought", "destination": "/rr-today.html" },
+    { "source": "/shareathought", "destination": "/rr-share.html" },
+    { "source": "/whereareyou", "destination": "/rr-where.html" },
+    { "source": "/asktheworld", "destination": "/rr-ask.html" },
+    { "source": "/letters", "destination": "/rr-letters.html" },
+    { "source": "/todayscollection", "destination": "/rr-collection.html" },
+    { "source": "/submit", "destination": "/rr-submit.html" }
+  ]
+}
