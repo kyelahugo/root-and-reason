@@ -144,21 +144,18 @@
     // archive: every older question, plus a fallback slot for the founding examples
     // if the live question has already moved on from the original one
     const pastQuestions = questions.slice(1);
-    let archiveHtml = pastQuestions.map(q => `
-      <details class="past-q">
-        <summary>"${escapeHtml(q.text)}"</summary>
-        ${renderNotes(answersFor(q.id))}
-      </details>
-    `).join('');
-
-    if(currentText.trim().toLowerCase() !== SEED_QUESTION){
-      archiveHtml += `
+    let archiveHtml = pastQuestions.map(q => {
+      let ans = answersFor(q.id);
+      if(q.text.trim().toLowerCase() === SEED_QUESTION){
+        ans = [...ans, ...foundingAnswers];
+      }
+      return `
         <details class="past-q">
-          <summary>"${escapeHtml(SEED_QUESTION)}"</summary>
-          ${renderNotes(foundingAnswers)}
+          <summary>"${escapeHtml(q.text)}"</summary>
+          ${renderNotes(ans)}
         </details>
       `;
-    }
+    }).join('');
 
     if(archiveHtml){
       document.getElementById('archiveSection').style.display = 'block';
