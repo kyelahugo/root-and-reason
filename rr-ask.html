@@ -185,21 +185,18 @@
     document.getElementById('answersList').innerHTML = renderAnswers(currentAnswers);
 
     const pastQuestions = questions.slice(1);
-    let archiveHtml = pastQuestions.map(q => `
-      <details class="past-q">
-        <summary>"${escapeHtml(q.text)}"</summary>
-        ${renderAnswers(answersFor(q.id))}
-      </details>
-    `).join('');
-
-    if(currentText.trim().toLowerCase() !== SEED_QUESTION){
-      archiveHtml += `
+    let archiveHtml = pastQuestions.map(q => {
+      let ans = answersFor(q.id);
+      if(q.text.trim().toLowerCase() === SEED_QUESTION){
+        ans = [...ans, ...foundingAnswers];
+      }
+      return `
         <details class="past-q">
-          <summary>"${escapeHtml(SEED_QUESTION)}"</summary>
-          ${renderAnswers(foundingAnswers)}
+          <summary>"${escapeHtml(q.text)}"</summary>
+          ${renderAnswers(ans)}
         </details>
       `;
-    }
+    }).join('');
 
     if(archiveHtml){
       document.getElementById('archiveSection').style.display = 'block';
