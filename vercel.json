@@ -2,12 +2,12 @@
   "cleanUrls": true,
   "rewrites": [
     { "source": "/about", "destination": "/rr-about.html" },
-    { "source": "/today's thought", "destination": "/rr-today.html" },
-    { "source": "/share a thought", "destination": "/rr-share.html" },
-    { "source": "/where are you?", "destination": "/rr-where.html" },
-    { "source": "/ask the world", "destination": "/rr-ask.html" },
+    { "source": "/todaysthought", "destination": "/rr-today.html" },
+    { "source": "/shareathought", "destination": "/rr-share.html" },
+    { "source": "/whereareyou", "destination": "/rr-where.html" },
+    { "source": "/asktheworld", "destination": "/rr-ask.html" },
     { "source": "/letters", "destination": "/rr-letters.html" },
-    { "source": "/today's collection", "destination": "/rr-collection.html" },
+    { "source": "/todayscollection", "destination": "/rr-collection.html" },
     { "source": "/submit", "destination": "/rr-submit.html" }
   ]
 }
