@@ -206,12 +206,29 @@
     answer: 'your answer'
   };
   const typePrompts = {
-    today: 'today\u2019s question: \u201cwhat changed your life?\u201d',
+    today: 'loading today\u2019s question...',
     thought: 'no prompt — just whatever\u2019s sitting with you today.',
     letter: 'write to whoever might need to read it.',
     postcard: 'what\u2019s it like where you are, right now?',
-    answer: 'answer: \u201chow do you find calm on hard days?\u201d'
+    answer: 'loading the current question...'
   };
+
+  async function loadLiveQuestionPrompts(){
+    try{
+      const { data: todayData } = await sb.from('questions').select('text').eq('context','today').eq('approved', true).order('created_at', { ascending: false }).limit(1);
+      if(todayData && todayData[0]){
+        typePrompts.today = `today\u2019s question: \u201c${todayData[0].text}\u201d`;
+        if(currentType === 'today') promptLine.textContent = typePrompts.today;
+      }
+    }catch(err){}
+    try{
+      const { data: askData } = await sb.from('questions').select('text').eq('context','ask').eq('approved', true).order('created_at', { ascending: false }).limit(1);
+      if(askData && askData[0]){
+        typePrompts.answer = `answer: \u201c${askData[0].text}\u201d`;
+        if(currentType === 'answer') promptLine.textContent = typePrompts.answer;
+      }
+    }catch(err){}
+  }
 
   const typeRow = document.getElementById('typeRow');
   const promptLine = document.getElementById('promptLine');
@@ -241,6 +258,7 @@
     if(preset && typeLabels[preset]) setType(preset);
   }
   applyPresetType();
+  loadLiveQuestionPrompts();
 
   const typeToContext = { today: 'today', answer: 'ask' };
 
